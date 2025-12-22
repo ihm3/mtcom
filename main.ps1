@@ -1,5 +1,5 @@
 param (
-    [string]$portname = "com3",
+    [string]$port = "com3",
     [int]$baudrate = 9600,
     [string]$parity = "none",
     [int]$databits = 8,
@@ -18,7 +18,7 @@ usage:
   .\main.ps1 [options]
 
 options:
-  -portname <name>      serial port (default: com3)
+  -port <name>      serial port (default: com3)
   -baudrate <n>         baud rate (default: 9600)
   -parity <none|even|odd|mark|space> (default: none)
   -databits <5-8>       data bits (default: 8)
@@ -56,4 +56,4 @@ if ($s) {
 
 if ($capture) { $global:capturefile = $capture }
 
-start-mtcom -portname $portname -baudrate $baudrate -parity $parity -databits $databits -stopbits $stopbits
+start-mtcom -port $port -baudrate $baudrate -parity $parity -databits $databits -stopbits $stopbits

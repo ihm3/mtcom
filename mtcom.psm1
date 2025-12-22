@@ -39,7 +39,7 @@ function load-macros {
 }
 
 function show-statusline {
-    $status = "mtcom | $($global:config.portname) | $($global:config.baudrate) $($global:config.parity)$($global:config.databits)$($global:config.stopbits) | capture: $($global:captureactive ? 'on' : 'off')"
+    $status = "mtcom | $($global:config.port) | $($global:config.baudrate) $($global:config.parity)$($global:config.databits)$($global:config.stopbits) | capture: $($global:captureactive ? 'on' : 'off')"
     Write-Host $status -ForegroundColor Yellow
 }
 
@@ -125,21 +125,21 @@ function handle-command {
 }
 
 function start-mtcom {
-    param($portname, $baudrate, $parity, $databits, $stopbits)
+    param($port, $baudrate, $parity, $databits, $stopbits)
 
     load-config
     load-macros
 
-    $global:config.portname = $portname
+    $global:config.port = $port
     $global:config.baudrate = $baudrate
 
-    $global:port = New-Object System.IO.Ports.SerialPort $portname,$baudrate,[System.IO.Ports.Parity]$parity,$databits,[System.IO.Ports.StopBits]$stopbits
+    $global:port = New-Object System.IO.Ports.SerialPort $port,$baudrate,[System.IO.Ports.Parity]$parity,$databits,[System.IO.Ports.StopBits]$stopbits
     $global:port.DtrEnable = $true
     $global:port.RtsEnable = $true
 
     try {
         $global:port.Open()
-        Write-Host "mtcom started: $portname @ $baudrate" -ForegroundColor Green
+        Write-Host "mtcom started: $port @ $baudrate" -ForegroundColor Green
         if ($global:config.statusline) { show-statusline }
 
         Register-ObjectEvent -InputObject $global:port -EventName DataReceived -Action {
